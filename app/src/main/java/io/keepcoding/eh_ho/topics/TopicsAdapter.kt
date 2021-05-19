@@ -35,6 +35,9 @@ class TopicsAdapter(diffUtilItemCallback: DiffUtil.ItemCallback<Topic> = DIFF) :
 
         fun bind(topic: Topic) {
             binding.title.text = topic.title
+            binding.lastPosterUsername.text = topic.lastPosterUsername
+            binding.likeCount.text = topic.likeCount.toString()
+            binding.postCount.text = topic.postCount.toString()
         }
     }
 }

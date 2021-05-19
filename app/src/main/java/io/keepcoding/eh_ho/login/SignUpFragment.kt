@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import io.keepcoding.eh_ho.common.TextChangedWatcher
 import io.keepcoding.eh_ho.databinding.FragmentSignUpBinding
+import io.keepcoding.eh_ho.utils.isValidEmail
+import io.keepcoding.eh_ho.utils.isValidPassword
+import io.keepcoding.eh_ho.utils.showError
 
 class SignUpFragment : Fragment() {
 
@@ -23,20 +26,36 @@ class SignUpFragment : Fragment() {
         }
         vm.signUpData.observe(viewLifecycleOwner) {
             inputEmail.apply {
-                setText(it.email)
-                setSelection(it.email.length)
+                if (it.email.isValidEmail()) {
+                    setText(it.email)
+                    setSelection(it.email.length)
+                } else {
+                    this@SignUpFragment.view?.showError("Email no valid")
+                }
             }
             inputUsername.apply {
-                setText(it.userName)
-                setSelection(it.userName.length)
+                if (it.userName.length <= 5) {
+                    this@SignUpFragment.view?.showError("Username no valid")
+                } else {
+                    setText(it.userName)
+                    setSelection(it.userName.length)
+                }
             }
             inputPassword.apply {
-                setText(it.password)
-                setSelection(it.password.length)
+                if (it.password.isValidPassword()) {
+                    setText(it.password)
+                    setSelection(it.password.length)
+                } else {
+                    this@SignUpFragment.view?.showError("Password no valid")
+                }
             }
             inputConfirmPassword.apply {
-                setText(it.confirmPassword)
-                setSelection(it.confirmPassword.length)
+                if (it.confirmPassword.isValidPassword()) {
+                    setText(it.confirmPassword)
+                    setSelection(it.confirmPassword.length)
+                } else {
+                    this@SignUpFragment.view?.showError("Confirm password no valid")
+                }
             }
         }
         vm.signUpEnabled.observe(viewLifecycleOwner) {

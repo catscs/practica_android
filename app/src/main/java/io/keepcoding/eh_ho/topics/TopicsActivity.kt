@@ -27,9 +27,16 @@ class TopicsActivity : AppCompatActivity() {
         vm.state.observe(this) {
             when (it) {
                 is TopicsViewModel.State.LoadingTopics -> renderLoading(it)
-                is TopicsViewModel.State.TopicsReceived -> topicsAdapter.submitList(it.topics)
+                is TopicsViewModel.State.TopicsReceived -> {
+                    topicsAdapter.submitList(it.topics)
+                    binding.swipeRefresh.isRefreshing = false
+                }
                 is TopicsViewModel.State.NoTopics -> renderEmptyState()
             }
+        }
+
+        binding.swipeRefresh.setOnRefreshListener {
+            vm.loadTopics()
         }
     }
 

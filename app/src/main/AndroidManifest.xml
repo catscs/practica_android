@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".topics.TopicsActivity" />
+        <activity android:name=".topics.TopicsActivity">
+
+        </activity>
     </application>
 
 </manifest>

@@ -19,6 +19,7 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
             State.SignIn,
             State.SignedIn,
             State.SignUp,
+            State.ErrorSigning,
             State.SignedUp -> false
             State.SigningIn,
             State.SigningUp -> true
@@ -66,12 +67,13 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun signIn() {
+        _state.postValue(State.SigningIn)
         signInData.value?.takeIf { it.isValid() }?.let {
             repository.signIn(it.userName, it.password) {
                 if (it is LogIn.Success) {
                     _state.postValue(State.SignedIn)
                 } else {
-                    //
+                    _state.postValue(State.ErrorSigning)
                 }
             }
         }
@@ -92,6 +94,7 @@ class LoginViewModel(private val repository: Repository) : ViewModel() {
         object SignUp : State()
         object SigningUp : State()
         object SignedUp : State()
+        object ErrorSigning: State()
     }
 
     data class SignInData(

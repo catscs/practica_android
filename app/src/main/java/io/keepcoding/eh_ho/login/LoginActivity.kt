@@ -2,13 +2,16 @@ package io.keepcoding.eh_ho.login
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import io.keepcoding.eh_ho.databinding.ActivityLoginBinding
 import io.keepcoding.eh_ho.di.DIProvider
 import io.keepcoding.eh_ho.topics.TopicsActivity
+import io.keepcoding.eh_ho.utils.showError
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,12 +31,14 @@ class LoginActivity : AppCompatActivity() {
                 is LoginViewModel.State.SignUp -> moveTo(signUpFragment)
                 is LoginViewModel.State.SigningUp -> { }
                 is LoginViewModel.State.SignedUp -> navigateToTopics()
+                LoginViewModel.State.ErrorSigning -> binding.fragmentContainer.showError("Se ha producido un error")
             }
         }
         vm.loading.observe(this) {
             binding.viewLoading.root.isVisible = it
         }
     }
+
 
     private fun moveTo(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
