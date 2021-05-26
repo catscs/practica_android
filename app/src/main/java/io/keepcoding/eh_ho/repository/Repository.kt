@@ -1,6 +1,7 @@
 package io.keepcoding.eh_ho.repository
 
 import io.keepcoding.eh_ho.model.LogIn
+import io.keepcoding.eh_ho.model.Post
 import io.keepcoding.eh_ho.model.Topic
 import io.keepcoding.eh_ho.network.Client
 
@@ -32,6 +33,12 @@ class Repository(private val client: Client) {
 
 	fun getTopics(callback: Callback<Result<List<Topic>>>) {
 		client.getTopics {
+			callback.onResult(it)
+		}
+	}
+
+	fun getPostsByTopic(topicId: Int, callback: Callback<Result<List<Post>>>) {
+		client.getPostsByTopic(topicId) {
 			callback.onResult(it)
 		}
 	}

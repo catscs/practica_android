@@ -15,14 +15,16 @@
         android:theme="@style/Theme.EhHo"
         >
 
-        <activity android:name=".login.LoginActivity" >
+        <activity android:name=".login.LoginActivity" ></activity>
+
+        <activity android:name=".posts.PostsActivity" />
+
+
+        <activity android:name=".topics.TopicsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name=".topics.TopicsActivity">
 
         </activity>
     </application>
