@@ -3,6 +3,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import io.keepcoding.eh_ho.model.Post
 import io.keepcoding.eh_ho.model.Topic
 import io.keepcoding.eh_ho.repository.Repository
 import io.keepcoding.eh_ho.topics.TopicsViewModel.State.TopicsReceived
@@ -38,6 +39,10 @@ class TopicsViewModel(private val repository: Repository) : ViewModel() {
         _state.postValue(State.NoTopics)
     }
 
+    fun onTopicSelected(topicId: Int) {
+        _state.postValue(State.NavigationToPosts(topicId))
+    }
+
     sealed class State {
         sealed class LoadingTopics : State() {
             object Loading : LoadingTopics()
@@ -45,6 +50,7 @@ class TopicsViewModel(private val repository: Repository) : ViewModel() {
         }
         data class TopicsReceived(val topics: List<Topic>) : State()
         object NoTopics : State()
+        data class NavigationToPosts(val topicId: Int): State()
     }
 
     class TopicsViewModelProviderFactory(private val repository: Repository) : ViewModelProvider.Factory {

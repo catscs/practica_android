@@ -6,20 +6,21 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import io.keepcoding.eh_ho.databinding.ActivityTopicsBinding
 import io.keepcoding.eh_ho.di.DIProvider
+import io.keepcoding.eh_ho.posts.PostsActivity
 
 class TopicsActivity : AppCompatActivity() {
 
     private val binding: ActivityTopicsBinding by lazy { ActivityTopicsBinding.inflate(layoutInflater) }
-    private val topicsAdapter = TopicsAdapter()
+    private lateinit var  topicsAdapter: TopicsAdapter
     private val vm: TopicsViewModel by viewModels { DIProvider.topicsViewModelProviderFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        topicsAdapter =  TopicsAdapter(clickListener = vm::onTopicSelected)
         binding.topics.apply {
             adapter = topicsAdapter
             addItemDecoration(DividerItemDecoration(this@TopicsActivity, LinearLayout.VERTICAL))
@@ -32,6 +33,11 @@ class TopicsActivity : AppCompatActivity() {
                     binding.swipeRefresh.isRefreshing = false
                 }
                 is TopicsViewModel.State.NoTopics -> renderEmptyState()
+                is TopicsViewModel.State.NavigationToPosts -> {
+                    val intent = PostsActivity.createIntent(this)
+                    intent.putExtra(PostsActivity.TOPIC_ID_EXTRA, it.topicId)
+                    startActivity(intent)
+                }
             }
         }
 

@@ -12,3 +12,6 @@ data class Topic(
     val postCount: Int,
     val lastPosterUsername: String
 )
+
+
+data class Post (val id: Int, val name: String, val username: String)
